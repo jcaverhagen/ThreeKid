@@ -15,19 +15,19 @@ public class PersonMapper {
                 .id(personRequest.getId())
                 .name(personRequest.getName())
                 .birthDate(personRequest.getBirthDate())
-                .parentIds(flattenParentIds(personRequest.getParent1().getId(), personRequest.getParent2().getId()))
-                .partner(personRequest.getPartner().getId())
+                .parentIds(flattenParentIds(personRequest.getParent1(), personRequest.getParent2()))
+                .partner((personRequest.getPartner() != null ? personRequest.getPartner().getId() : null))
                 .children(flattenChildrenIds(personRequest.getChildren()))
                 .build();
     }
 
-    private List<Long> flattenParentIds(Long parent1, Long parent2) {
+    private List<Long> flattenParentIds(PersonIdentityRequest parent1, PersonIdentityRequest parent2) {
         List<Long> parentIds = new ArrayList<>();
         if (parent1 != null) {
-            parentIds.add(parent1);
+            parentIds.add(parent1.getId());
         }
         if (parent2 != null) {
-            parentIds.add(parent2);
+            parentIds.add(parent2.getId());
         }
         return parentIds;
     }
