@@ -4,8 +4,9 @@ import nl.janverhagen.threekid.domain.Person;
 import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Repository for managing Person entities.
@@ -17,16 +18,16 @@ import java.util.Map;
 @Repository
 public class InMemoryPersonRepository implements PersonRepository {
 
-    private final Map<Long, Person> fakeDatabase = new HashMap<>();
+    private final Map<Long, Person> fakeDatabase = new ConcurrentHashMap<>();
 
     @Override
-    public void save(Person person) {
+    public void saveOrUpdate(Person person) {
         fakeDatabase.put(person.getId(), person);
     }
 
     @Override
-    public Person findById(Long id) {
-        return fakeDatabase.get(id);
+    public Optional<Person> findById(Long id) {
+        return Optional.ofNullable(fakeDatabase.get(id));
     }
 
     @Override

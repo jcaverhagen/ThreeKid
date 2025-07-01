@@ -6,6 +6,7 @@ import nl.janverhagen.threekid.dto.PersonIdentityRequest;
 import nl.janverhagen.threekid.dto.PersonRequest;
 import org.springframework.stereotype.Component;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -16,11 +17,21 @@ public class PersonMapper {
                 .id(personRequest.getId())
                 .name(personRequest.getName())
                 .birthDate(personRequest.getBirthDate())
-                .parent1(toPersonIdentity(personRequest.getParent1()))
-                .parent2(toPersonIdentity(personRequest.getParent2()))
+                .parentIds(flattenParentIds(personRequest.getParent1(), personRequest.getParent2()))
                 .partner(toPersonIdentity(personRequest.getPartner()))
                 .children(toPersonIdentityList(personRequest.getChildren()))
                 .build();
+    }
+
+    private List<PersonIdentity> flattenParentIds(PersonIdentityRequest parent1, PersonIdentityRequest parent2) {
+        List<PersonIdentity> parentIds = new ArrayList<>();
+        if (parent1 != null) {
+            parentIds.add(new PersonIdentity(parent1.getId()));
+        }
+        if (parent2 != null) {
+            parentIds.add(new PersonIdentity(parent2.getId()));
+        }
+        return parentIds;
     }
 
     private PersonIdentity toPersonIdentity(PersonIdentityRequest personIdentityRequest) {

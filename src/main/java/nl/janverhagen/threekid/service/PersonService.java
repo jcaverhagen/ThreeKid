@@ -2,11 +2,13 @@ package nl.janverhagen.threekid.service;
 
 import lombok.AllArgsConstructor;
 import nl.janverhagen.threekid.domain.Person;
+import nl.janverhagen.threekid.domain.PersonIdentity;
 import nl.janverhagen.threekid.dto.PersonRequest;
 import nl.janverhagen.threekid.mapper.PersonMapper;
 import nl.janverhagen.threekid.repository.PersonRepository;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -18,7 +20,7 @@ public class PersonService {
 
     public void savePerson(PersonRequest personRequest) {
         Person person = personMapper.map(personRequest);
-        if(validatePerson(person)) personRepository.save(person);
+        personRepository.saveOrUpdate(person);
     }
 
     boolean validatePerson(Person person) {
@@ -32,8 +34,8 @@ public class PersonService {
         List<Person> children = person.getChildren()
                 .stream()
                 .map(child -> {
-                    Person existingChild = personRepository.findById(child.getId());
-                    return existingChild != null ? existingChild : Person.builder().id(child.getId()).build();
+                    Optional<Person> existingChild = personRepository.findById(child.getId());
+                    return existingChild.orElseGet(() -> Person.builder().id(child.getId()).build());
                 })
                 .collect(Collectors.toList());
 
@@ -55,10 +57,7 @@ public class PersonService {
     }
 
     public long findPersonById(Long id) {
-        Person person = personRepository.findById(id);
-        if(person == null) {
-            return -1;
-        }
-        return person.getId();
+        Optional<Person> optionalPerson = personRepository.findById(id);
+        return optionalPerson.map(PersonIdentity::getId).orElse(-1L);
     }
 }

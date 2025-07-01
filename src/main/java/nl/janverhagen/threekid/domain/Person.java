@@ -1,6 +1,7 @@
 package nl.janverhagen.threekid.domain;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
@@ -10,21 +11,14 @@ import java.util.ArrayList;
 
 
 @Getter
+@Setter
 @SuperBuilder
 public class Person extends PersonIdentity {
     private final String name;
     private final LocalDate birthDate;
-    private final PersonIdentity parent1;
-    private final PersonIdentity parent2;
-    private final PersonIdentity partner;
-    private final ArrayList<PersonIdentity> children;
-
-    public List<Long> getParentIds() {
-        return List.of(
-            parent1 != null ? parent1.getId() : null,
-            parent2 != null ? parent2.getId() : null
-        );
-    }
+    private List<PersonIdentity> parentIds;
+    private PersonIdentity partner;
+    private ArrayList<PersonIdentity> children;
 
     public int getAge() {
         return Period.between(birthDate, LocalDate.now()).getYears();

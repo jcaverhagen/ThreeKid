@@ -53,6 +53,7 @@ public class PersonController {
     )
     public ResponseEntity<String> savePerson(@RequestBody PersonRequest personRequest) {
         personService.savePerson(personRequest);
+
         return ResponseEntity.ok("Person saved successfully");
     }
 
