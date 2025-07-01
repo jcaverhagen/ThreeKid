@@ -15,7 +15,14 @@ public class PersonService {
     private final PersonMapper personMapper;
 
     public void savePerson(PersonRequest personRequest) {
-        personRepository.save(personMapper.map(personRequest));
+        Person person = personMapper.map(personRequest);
+        if(validatePerson(person)) personRepository.save(person);
+    }
+
+    boolean validatePerson(Person person) {
+        if (person.getPartner() == null) return false;
+
+        return true;
     }
 
     public long findPersonById(Long id) {
