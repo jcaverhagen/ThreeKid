@@ -4,7 +4,10 @@ import nl.janverhagen.threekid.domain.Person;
 import nl.janverhagen.threekid.domain.PersonIdentity;
 import nl.janverhagen.threekid.mapper.PersonMapper;
 import nl.janverhagen.threekid.repository.PersonRepository;
-import org.junit.jupiter.api.BeforeAll;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -51,6 +54,36 @@ class PersonServiceTest {
         // Then
         assertFalse(isValidWithoutPartner, "Person without partner should not be valid");
         assertTrue(isValidWithPartner, "Person with partner should be valid");
+    }
 
+    @Test
+    void validateChildren() {
+        // Given
+        Person personWithValidChildren = Person.builder()
+                .id(1L)
+                .partner(PersonIdentity.builder().id(2L).build())
+                .children(new ArrayList<>(List.of(
+                        Person.builder().id(3L).birthDate(LocalDate.now().minusYears(10)).build(),
+                        Person.builder().id(4L).birthDate(LocalDate.now().minusYears(15)).build(),
+                        Person.builder().id(5L).birthDate(LocalDate.now().minusYears(5)).build()
+                )))
+                .build();
+
+        Person personWithInvalidChildren = Person.builder()
+                .id(2L)
+                .partner(PersonIdentity.builder().id(3L).build())
+                .children(new ArrayList<>(List.of(
+                        Person.builder().id(6L).birthDate(LocalDate.now().minusYears(20)).build(),
+                        Person.builder().id(7L).birthDate(LocalDate.now().minusYears(22)).build()
+                )))
+                .build();
+
+        // When
+        boolean isValidWithValidChildren = personService.validateChildren(personWithValidChildren);
+        boolean isValidWithInvalidChildren = personService.validateChildren(personWithInvalidChildren);
+
+        // Then
+        assertTrue(isValidWithValidChildren, "Person with valid children should be valid");
+        assertFalse(isValidWithInvalidChildren, "Person with invalid children should not be valid");
     }
 }

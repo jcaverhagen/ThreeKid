@@ -19,7 +19,7 @@ public class PersonMapper {
                 .parent1(toPersonIdentity(personRequest.getParent1()))
                 .parent2(toPersonIdentity(personRequest.getParent2()))
                 .partner(toPersonIdentity(personRequest.getPartner()))
-                .Children(toPersonIdentityList(personRequest.getChildren()))
+                .children(toPersonIdentityList(personRequest.getChildren()))
                 .build();
     }
 

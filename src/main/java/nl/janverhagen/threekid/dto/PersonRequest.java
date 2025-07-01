@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 @AllArgsConstructor
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 public class PersonRequest extends PersonIdentityRequest {
 
     private final String name;
-    private final String birthDate;
+    private final LocalDate birthDate;
     private final PersonIdentityRequest parent1;
     private final PersonIdentityRequest parent2;
     private final PersonIdentityRequest partner;
