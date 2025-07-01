@@ -1,8 +1,8 @@
 package nl.janverhagen.threekid.E2E;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import nl.janverhagen.threekid.dto.PersonRequest;
 import nl.janverhagen.threekid.dto.PersonIdentityRequest;
+import nl.janverhagen.threekid.dto.PersonRequest;
 import nl.janverhagen.threekid.repository.PersonRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;

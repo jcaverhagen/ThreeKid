@@ -1,7 +1,6 @@
 package nl.janverhagen.threekid.service;
 
 import nl.janverhagen.threekid.domain.Person;
-import nl.janverhagen.threekid.mapper.PersonMapper;
 import nl.janverhagen.threekid.repository.PersonRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -4,9 +4,9 @@ import nl.janverhagen.threekid.domain.Person;
 import nl.janverhagen.threekid.dto.PersonIdentityRequest;
 import nl.janverhagen.threekid.dto.PersonRequest;
 import org.junit.jupiter.api.Test;
-import java.util.List;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 

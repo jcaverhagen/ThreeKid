@@ -4,6 +4,7 @@ import nl.janverhagen.threekid.domain.Person;
 import nl.janverhagen.threekid.dto.PersonIdentityRequest;
 import nl.janverhagen.threekid.dto.PersonRequest;
 import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.List;
 

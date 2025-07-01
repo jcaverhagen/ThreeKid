@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
-import java.util.List;
 import lombok.AllArgsConstructor;
 import nl.janverhagen.threekid.domain.Person;
 import nl.janverhagen.threekid.dto.PersonRequest;
@@ -14,6 +13,8 @@ import nl.janverhagen.threekid.service.PersonService;
 import nl.janverhagen.threekid.service.RelationshipService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @OpenAPIDefinition(
     info = @io.swagger.v3.oas.annotations.info.Info(
