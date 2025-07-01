@@ -1,10 +1,13 @@
 package nl.janverhagen.threekid.dto;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.ToString;
 
 import java.util.ArrayList;
 
 @AllArgsConstructor
+@ToString(callSuper = true)
 public class PersonRequest extends PersonIdentity {
 
     private final String name;
