@@ -2,7 +2,6 @@ package nl.janverhagen.threekid.service;
 
 import lombok.AllArgsConstructor;
 import nl.janverhagen.threekid.domain.Person;
-import nl.janverhagen.threekid.domain.PersonIdentity;
 import nl.janverhagen.threekid.dto.PersonRequest;
 import nl.janverhagen.threekid.mapper.PersonMapper;
 import nl.janverhagen.threekid.repository.PersonRepository;
@@ -34,8 +33,8 @@ public class PersonService {
         List<Person> children = person.getChildren()
                 .stream()
                 .map(child -> {
-                    Optional<Person> existingChild = personRepository.findById(child.getId());
-                    return existingChild.orElseGet(() -> Person.builder().id(child.getId()).build());
+                    Optional<Person> existingChild = personRepository.findById(child);
+                    return existingChild.orElseGet(() -> Person.builder().id(child).build());
                 })
                 .collect(Collectors.toList());
 
@@ -43,7 +42,7 @@ public class PersonService {
         if (children.size() != 3) return false;
 
         // Validate that each child has the partner as a parent
-        long parentId = person.getPartner().getId();
+        long parentId = person.getPartner();
         boolean allChildrenHavePartnerAsParent = children.stream()
                 .allMatch(child -> child.getParentIds().contains(parentId));
         if (!allChildrenHavePartnerAsParent) return false;
@@ -58,6 +57,6 @@ public class PersonService {
 
     public long findPersonById(Long id) {
         Optional<Person> optionalPerson = personRepository.findById(id);
-        return optionalPerson.map(PersonIdentity::getId).orElse(-1L);
+        return optionalPerson.map(Person::getId).orElse(-1L);
     }
 }

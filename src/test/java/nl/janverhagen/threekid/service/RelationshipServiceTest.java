@@ -1,7 +1,6 @@
 package nl.janverhagen.threekid.service;
 
 import nl.janverhagen.threekid.domain.Person;
-import nl.janverhagen.threekid.domain.PersonIdentity;
 import nl.janverhagen.threekid.repository.PersonRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,7 +36,7 @@ class RelationshipServiceTest {
         Person parent = Person.builder()
                 .id(1L)
                 .name("Parent")
-                .children(List.of(PersonIdentity.builder().id(2L).build())) // Initially no children
+                .children(List.of(2L)) // Initially no children
                 .build();
 
         Person child = Person.builder()
@@ -61,7 +60,7 @@ class RelationshipServiceTest {
         Person parent = Person.builder()
                 .id(1L)
                 .name("Parent")
-                .children(List.of(PersonIdentity.builder().id(2L).build()))
+                .children(List.of(2L))
                 .build();
 
         Person child = Person.builder()
@@ -82,7 +81,7 @@ class RelationshipServiceTest {
         Person updatedChild = captor.getValue();
 
         // Assert parent ID was added
-        assertTrue(updatedChild.getParentIds().contains(PersonIdentity.builder().id(1L).build()),
+        assertTrue(updatedChild.getParentIds().contains(1L),
                 "Child should have the parent ID added to its parentIds");
     }
 
@@ -92,7 +91,7 @@ class RelationshipServiceTest {
         Person person = Person.builder()
                 .id(10L)
                 .name("Child")
-                .parentIds(List.of(PersonIdentity.builder().id(20L).build()))
+                .parentIds(List.of(20L))
                 .build();
 
         Person parent = Person.builder()
@@ -112,7 +111,7 @@ class RelationshipServiceTest {
         Person updatedParent = captor.getValue();
 
         assertTrue(updatedParent.getChildren().stream()
-                        .anyMatch(child -> child.getId() == 10L),
+                        .anyMatch(child -> child == 10L),
                 "Parent should have the child added to its children list");
     }
 
@@ -122,7 +121,7 @@ class RelationshipServiceTest {
         Person person = Person.builder()
                 .id(100L)
                 .name("Person A")
-                .partner(PersonIdentity.builder().id(200L).build())
+                .partner(200L)
                 .build();
 
         Person partner = Person.builder()
@@ -141,7 +140,7 @@ class RelationshipServiceTest {
         verify(personRepository).saveOrUpdate(captor.capture());
         Person updatedPartner = captor.getValue();
 
-        assertEquals(100L, updatedPartner.getPartner().getId(),
+        assertEquals(100L, updatedPartner.getPartner(),
                 "Partner should now list the person as their partner");
     }
 
@@ -151,9 +150,9 @@ class RelationshipServiceTest {
         Person person = Person.builder()
                 .id(1L)
                 .name("Person A")
-                .children(List.of(PersonIdentity.builder().id(2L).build()))
-                .parentIds(List.of(PersonIdentity.builder().id(3L).build()))
-                .partner(PersonIdentity.builder().id(4L).build())
+                .children(List.of(2L))
+                .parentIds(List.of(3L))
+                .partner(4L)
                 .build();
 
         // Child (2) missing parent reference
@@ -196,7 +195,7 @@ class RelationshipServiceTest {
         // Child should have parent ID 1
         assertTrue(
                 updated.stream().anyMatch(p ->
-                        p.getId() == 2L && p.getParentIds().contains(PersonIdentity.builder().id(1L).build())),
+                        p.getId() == 2L && p.getParentIds().contains(1L)),
                 "Child should have Person A as parent"
         );
 
@@ -204,7 +203,7 @@ class RelationshipServiceTest {
         assertTrue(
                 updated.stream().anyMatch(p ->
                         p.getId() == 3L && p.getChildren().stream()
-                                .anyMatch(c -> c.getId() == 1L)),
+                                .anyMatch(c -> c == 1L)),
                 "Parent should have Person A as child"
         );
 
@@ -212,7 +211,7 @@ class RelationshipServiceTest {
         assertTrue(
                 updated.stream().anyMatch(p ->
                         p.getId() == 4L && p.getPartner() != null &&
-                                p.getPartner().getId() == 1L),
+                                p.getPartner() == 1L),
                 "Partner should have Person A as partner"
         );
     }

@@ -1,7 +1,6 @@
 package nl.janverhagen.threekid.service;
 
 import nl.janverhagen.threekid.domain.Person;
-import nl.janverhagen.threekid.domain.PersonIdentity;
 import nl.janverhagen.threekid.mapper.PersonMapper;
 import nl.janverhagen.threekid.repository.PersonRepository;
 
@@ -44,7 +43,7 @@ class PersonServiceTest {
         Person personWithPartner = Person.builder()
                 .id(2L)
                 .name("Piet")
-                .partner(PersonIdentity.builder().id(3L).build()) // Partner set
+                .partner(3L) // Partner set
                 .build();
 
         // When
@@ -61,21 +60,14 @@ class PersonServiceTest {
         // Given
         Person personWithValidChildren = Person.builder()
                 .id(1L)
-                .partner(PersonIdentity.builder().id(2L).build())
-                .children(new ArrayList<>(List.of(
-                        Person.builder().id(3L).birthDate(LocalDate.now().minusYears(10)).build(),
-                        Person.builder().id(4L).birthDate(LocalDate.now().minusYears(15)).build(),
-                        Person.builder().id(5L).birthDate(LocalDate.now().minusYears(5)).build()
-                )))
+                .partner(2L)
+                .children(new ArrayList<>(List.of(3L, 4L, 5L)))
                 .build();
 
         Person personWithInvalidChildren = Person.builder()
                 .id(2L)
-                .partner(PersonIdentity.builder().id(3L).build())
-                .children(new ArrayList<>(List.of(
-                        Person.builder().id(6L).birthDate(LocalDate.now().minusYears(20)).build(),
-                        Person.builder().id(7L).birthDate(LocalDate.now().minusYears(22)).build()
-                )))
+                .partner(3L)
+                .children(new ArrayList<>(List.of(6L, 7L)))
                 .build();
 
         // When

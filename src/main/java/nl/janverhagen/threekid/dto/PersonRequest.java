@@ -9,9 +9,10 @@ import java.util.ArrayList;
 
 @AllArgsConstructor
 @Getter
-@ToString(callSuper = true)
-public class PersonRequest extends PersonIdentityRequest {
+@ToString
+public class PersonRequest {
 
+    private final Long id;
     private final String name;
     private final LocalDate birthDate;
     private final PersonIdentityRequest parent1;

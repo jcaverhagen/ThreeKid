@@ -13,18 +13,19 @@ import java.util.List;
 @Getter
 @Setter
 @SuperBuilder
-public class Person extends PersonIdentity {
+public class Person {
+    private final long id;
     private final String name;
     private final LocalDate birthDate;
-    private List<PersonIdentity> parentIds;
-    private PersonIdentity partner;
-    private List<PersonIdentity> children;
+    private List<Long> parentIds;
+    private Long partner;
+    private List<Long> children;
 
     public int getAge() {
         return Period.between(birthDate, LocalDate.now()).getYears();
     }
 
-    public void addParent(PersonIdentity parent) {
+    public void addParent(Long parent) {
         if (getParentIds() == null) {
             setParentIds(new ArrayList<>());
         }

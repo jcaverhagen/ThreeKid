@@ -2,7 +2,6 @@ package nl.janverhagen.threekid.service;
 
 import lombok.AllArgsConstructor;
 import nl.janverhagen.threekid.domain.Person;
-import nl.janverhagen.threekid.domain.PersonIdentity;
 import nl.janverhagen.threekid.repository.PersonRepository;
 import org.springframework.stereotype.Service;
 
@@ -20,10 +19,10 @@ public class RelationshipService {
 
     // First check if the child's parentIds contains the person id
     protected void fixChildsParentsIds(Person person) {
-        for (PersonIdentity child : person.getChildren()) {
-            personRepository.findById(child.getId()).ifPresent(childItem -> {
+        for (Long child : person.getChildren()) {
+            personRepository.findById(child).ifPresent(childItem -> {
                 if(!childItem.getParentIds().contains(person.getId())) {
-                    childItem.addParent(PersonIdentity.builder().id(person.getId()).build());
+                    childItem.addParent(person.getId());
                     personRepository.saveOrUpdate(childItem);
                 }
             });
@@ -32,10 +31,10 @@ public class RelationshipService {
 
     // Then check if the person's parentIds contains the child id of this person
     protected void fixParentsChildrenIds(Person person) {
-        for (PersonIdentity parent : person.getParentIds()) {
-            personRepository.findById(parent.getId()).ifPresent(parentItem -> {
-                if(!parentItem.getChildren().contains(PersonIdentity.builder().id(person.getId()).build())) {
-                    parentItem.getChildren().add(PersonIdentity.builder().id(person.getId()).build());
+        for (Long parent : person.getParentIds()) {
+            personRepository.findById(parent).ifPresent(parentItem -> {
+                if(!parentItem.getChildren().contains(person.getId())) {
+                    parentItem.getChildren().add(person.getId());
                     personRepository.saveOrUpdate(parentItem);
                 }
             });
@@ -45,9 +44,9 @@ public class RelationshipService {
     // Finally, check if the partner's partnerId contains the person id
     protected void fixPartnerPartnerIds(Person person) {
         if (person.getPartner() != null) {
-            personRepository.findById(person.getPartner().getId()).ifPresent(partnerItem -> {
+            personRepository.findById(person.getPartner()).ifPresent(partnerItem -> {
                 if(person.getId() != partnerItem.getId()) {
-                    partnerItem.setPartner(PersonIdentity.builder().id(person.getId()).build());
+                    partnerItem.setPartner(person.getId());
                     personRepository.saveOrUpdate(partnerItem);
                 }
             });
