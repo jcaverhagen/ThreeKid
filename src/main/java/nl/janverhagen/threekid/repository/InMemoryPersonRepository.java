@@ -39,4 +39,9 @@ public class InMemoryPersonRepository implements PersonRepository {
     public Collection<Person> findAll() {
         return fakeDatabase.values();
     }
+
+    @Override
+    public void clear() {
+        fakeDatabase.clear();
+    }
 }

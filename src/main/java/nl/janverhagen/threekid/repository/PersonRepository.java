@@ -12,4 +12,6 @@ public interface PersonRepository {
     Optional<Person> findById(Long id);
     void delete(Long id);
     Collection<Person> findAll();
+
+    void clear();
 }
