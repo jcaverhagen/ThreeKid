@@ -9,6 +9,6 @@ import lombok.ToString;
 @AllArgsConstructor
 @Getter
 @ToString
-public class PersonIdentity {
+public class PersonIdentityRequest {
     private long id;
 }
