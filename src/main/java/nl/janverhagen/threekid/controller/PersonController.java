@@ -4,10 +4,14 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.validation.Valid;
+import java.util.List;
 import lombok.AllArgsConstructor;
+import nl.janverhagen.threekid.domain.Person;
 import nl.janverhagen.threekid.dto.PersonRequest;
+import nl.janverhagen.threekid.mapper.PersonMapper;
+import nl.janverhagen.threekid.service.FamilyMatcherService;
 import nl.janverhagen.threekid.service.PersonService;
+import nl.janverhagen.threekid.service.RelationshipService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +28,9 @@ import org.springframework.web.bind.annotation.*;
 public class PersonController {
 
     private final PersonService personService;
+    private final RelationshipService relationshipService;
+    private final FamilyMatcherService familyMatcherService;
+    private final PersonMapper personMapper;
 
     @PostMapping
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -51,10 +58,18 @@ public class PersonController {
                     )
             )
     )
-    public ResponseEntity<String> savePerson(@RequestBody PersonRequest personRequest) {
-        personService.savePerson(personRequest);
+    public ResponseEntity<List<Person>> savePerson(@RequestBody PersonRequest personRequest) {
+        Person person = personMapper.map(personRequest);
+        personService.savePerson(person);
+        relationshipService.ensureBidirectional(person);
 
-        return ResponseEntity.ok("Person saved successfully");
+        List<Person> matches = familyMatcherService.findMatchingPersons();
+
+        if(!matches.isEmpty()) {
+            return ResponseEntity.ok(matches);
+        } else {
+            return ResponseEntity.status(444).build();
+        }
     }
 
     @GetMapping("/{id}")
