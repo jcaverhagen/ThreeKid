@@ -4,10 +4,11 @@ import nl.janverhagen.threekid.domain.Person;
 import nl.janverhagen.threekid.domain.PersonIdentity;
 import nl.janverhagen.threekid.dto.PersonIdentityRequest;
 import nl.janverhagen.threekid.dto.PersonRequest;
-
+import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
+@Component
 public class PersonMapper {
 
     public Person map(PersonRequest personRequest) {

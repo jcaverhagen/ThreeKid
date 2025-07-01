@@ -16,6 +16,6 @@ public class PersonRequest extends PersonIdentityRequest {
     private final PersonIdentityRequest parent1;
     private final PersonIdentityRequest parent2;
     private final PersonIdentityRequest partner;
-    private final ArrayList<PersonIdentityRequest> Children;
+    private final ArrayList<PersonIdentityRequest> children;
 
 }

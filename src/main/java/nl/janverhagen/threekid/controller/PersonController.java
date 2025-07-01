@@ -5,7 +5,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
 import nl.janverhagen.threekid.dto.PersonRequest;
+import nl.janverhagen.threekid.service.PersonService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,8 +19,11 @@ import org.springframework.web.bind.annotation.*;
     )
 )
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/v1/people")
 public class PersonController {
+
+    private final PersonService personService;
 
     @PostMapping
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
@@ -46,9 +51,18 @@ public class PersonController {
                     )
             )
     )
-    public ResponseEntity<String> savePerson(@Valid @RequestBody PersonRequest personRequest) {
-        System.out.println("Saving person: " + personRequest);
+    public ResponseEntity<String> savePerson(@RequestBody PersonRequest personRequest) {
+        personService.savePerson(personRequest);
         return ResponseEntity.ok("Person saved successfully");
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<String> getPerson(@PathVariable Long id) {
+        long personId = personService.findPersonById(id);
+        if(personId == -1) {
+            return ResponseEntity.status(404).body("Person not found");
+        }
+        return ResponseEntity.ok("Person found with ID: " + personId);
     }
 
     @DeleteMapping
