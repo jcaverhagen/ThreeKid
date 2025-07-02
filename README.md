@@ -2,6 +2,11 @@
 
 ThreeKid Family Challenge is a Spring Boot application designed to manage family relationships and data. It provides RESTful APIs to create, retrieve, update, and delete family-related information.
 
+## Latest build status:
+
+![ThreeKid CI latest build status](https://github.com/jcaverhagen/ThreeKid/actions/workflows/build.yml/badge.svg)
+
+
 ---
 
 ## Features
