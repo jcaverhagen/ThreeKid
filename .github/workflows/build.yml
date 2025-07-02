@@ -23,3 +23,10 @@ jobs:
 
       - name: Build with Maven
         run: mvn clean verify
+
+      - name: Upload JaCoCo report
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: jacoco-report
+          path: target/site/jacoco/
