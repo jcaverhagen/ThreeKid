@@ -16,6 +16,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -141,6 +143,29 @@ public class PersonE2ETest {
                         .content(objectMapper.writeValueAsString(parent)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id", is(1)));
+    }
+
+    @Test
+    void deletedPersonIsIgnoredOnPost() throws Exception {
+        // given
+        List<Long> idsToDelete = List.of(123L, 456L, 789L);
+
+        PersonRequest request = new PersonRequest(
+                123L, "ShouldBeIgnored", LocalDate.now(), null, null, null, List.of()
+        );
+
+        // when + then
+        mockMvc.perform(delete("/api/v1/people")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(objectMapper.writeValueAsString(idsToDelete)))
+                .andExpect(status().isNoContent());
+
+        mockMvc.perform(post("/api/v1/people")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().is(444));  // Because no match should ever be possible
+
+        idsToDelete.forEach(id -> assertTrue(personRepository.isIgnored(id)));
     }
 
 }

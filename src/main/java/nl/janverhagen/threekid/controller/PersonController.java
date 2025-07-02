@@ -82,9 +82,10 @@ public class PersonController {
         return ResponseEntity.ok("Person found with ID: " + personId);
     }
 
-    @DeleteMapping
-    public void deletePerson() {
-
+    @DeleteMapping()
+    public ResponseEntity<String> deletePerson(@RequestBody List<Long> ids) {
+        ids.forEach(personService::deleteAndIgnore);
+        return ResponseEntity.noContent().build();
     }
 
 }

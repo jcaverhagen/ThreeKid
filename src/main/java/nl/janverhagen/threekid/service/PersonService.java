@@ -21,4 +21,8 @@ public class PersonService {
         Optional<Person> optionalPerson = personRepository.findById(id);
         return optionalPerson.map(Person::getId).orElse(-1L);
     }
+
+    public void deleteAndIgnore(Long id) {
+        personRepository.deleteAndIgnore(id);
+    }
 }

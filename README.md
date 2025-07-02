@@ -55,6 +55,19 @@ ThreeKid Family Challenge is a Spring Boot application designed to manage family
 
 It was difficult to concentrate with the temperature inside the house being 30 degrees Celsius.
 
+## Tests
+Unit tests for:
+- Person mapping
+- Relationship fixing
+- Validation logic
+
+Integration tests:
+- Controller endpoints
+- End-to-end family matching
+- DELETE purge & ignore functionality
+
+Test coverage:
+> The codebase is covered by unit and integration tests with **>90% test coverage**
 
 ## Future improvements
 

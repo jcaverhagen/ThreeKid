@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -19,9 +20,13 @@ import java.util.concurrent.ConcurrentHashMap;
 public class InMemoryPersonRepository implements PersonRepository {
 
     private final Map<Long, Person> fakeDatabase = new ConcurrentHashMap<>();
+    private final Set<Long> ignoreIds = ConcurrentHashMap.newKeySet();
 
     @Override
     public void saveOrUpdate(Person person) {
+        if (isIgnored(person.getId())) {
+            return;
+        }
         fakeDatabase.put(person.getId(), person);
     }
 
@@ -31,8 +36,14 @@ public class InMemoryPersonRepository implements PersonRepository {
     }
 
     @Override
-    public void delete(Long id) {
+    public void deleteAndIgnore(Long id) {
         fakeDatabase.remove(id);
+        ignoreIds.add(id);
+    }
+
+    @Override
+    public boolean isIgnored(Long id) {
+        return ignoreIds.contains(id);
     }
 
     @Override
