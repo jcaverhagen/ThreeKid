@@ -7,6 +7,10 @@ import lombok.ToString;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * Represents a request to create or update a person in the system.
+ * Contains personal details such as name, birthdate, and relationships with other persons.
+ */
 @AllArgsConstructor
 @Getter
 @ToString

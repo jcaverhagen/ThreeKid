@@ -9,6 +9,10 @@ import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
+/***
+ * Represents a person in the system.
+ * Contains personal details such as name, birthdate, and relationships with other persons.
+ */
 
 @Getter
 @Setter
